@@ -350,17 +350,29 @@ clicks: 3
   <div class="text-xl text-gray-400">↓</div>
   <div class="w-full px-4 py-2 border-2 border-blue-600 rounded bg-blue-50 text-center shadow-sm opacity-80">Embeddings</div>
   <div class="text-xl text-gray-400">↓</div>
-  <!-- Highlighted State: Click 1+ -->
+  <!-- Highlighted State: Click 1 -->
   <div
     class="w-full px-4 py-2 rounded text-center transition-all duration-300"
-    :class="$clicks >= 1 ? 'border-4 border-orange-600 bg-orange-50 font-bold shadow-md scale-105' : 'border-2 border-orange-400 bg-orange-50/50 shadow-sm'"
+    :class="$clicks === 1 ? 'border-4 border-orange-600 bg-orange-50 font-bold shadow-md scale-105' : 'border-2 border-orange-400 bg-orange-50/50 shadow-sm'"
   >
     Computation Graph
   </div>
   <div class="text-xl text-gray-400">↓</div>
-  <div class="w-full px-4 py-2 border-2 border-purple-600 rounded bg-purple-50 text-center shadow-sm opacity-80">Activation Function</div>
+  <!-- Highlighted State: Click 2 -->
+  <div
+    class="w-full px-4 py-2 rounded text-center transition-all duration-300"
+    :class="$clicks === 2 ? 'border-4 border-purple-600 bg-purple-50 font-bold shadow-md scale-105' : 'border-2 border-purple-400 bg-purple-50/50 shadow-sm'"
+  >
+    Activation Function
+  </div>
   <div class="text-xl text-gray-400">↓</div>
-  <div class="w-full px-4 py-2 border-2 border-red-600 rounded bg-red-50 text-center shadow-sm opacity-80">Probability Distribution</div>
+  <!-- Highlighted State: Click 3 -->
+  <div
+    class="w-full px-4 py-2 rounded text-center transition-all duration-300"
+    :class="$clicks >= 3 ? 'border-4 border-red-600 bg-red-50 font-bold shadow-md scale-105' : 'border-2 border-red-400 bg-red-50/50 shadow-sm'"
+  >
+    Probability Distribution
+  </div>
 </div>
 
 ::right::
@@ -369,13 +381,22 @@ clicks: 3
   <h1 class="text-5xl font-bold mb-2">The Flow</h1>
   <p class="text-lg text-gray-500 mb-8">How do we transform integers into a distribution?</p>
 
-  <div v-click="2" class="space-y-6">
-    <p class="text-lg text-gray-600 leading-snug">
-      The <strong>Computation Graph</strong> is a chain of math operations.
-    </p>
-    <p class="text-lg text-gray-600 leading-snug">
-      To learn, we must calculate the <strong>gradient</strong> (impact) of every single variable on the final output.
-    </p>
+  <div class="space-y-6">
+    <div v-click="1" :class="$clicks === 1 ? 'opacity-100' : 'opacity-30 transition-opacity'">
+      <p class="text-lg text-gray-600 leading-snug">
+        The <strong>Computation Graph</strong> is a chain of math operations. To improve, we must calculate the gradient of every variable.
+      </p>
+    </div>
+    <div v-click="2" :class="$clicks === 2 ? 'opacity-100' : 'opacity-30 transition-opacity'">
+      <p class="text-lg text-gray-600 leading-snug">
+        The <strong>Activation Function</strong> turns arbitrary numbers into structured values. It introduces non-linearity and transforms the data space.
+      </p>
+    </div>
+    <div v-click="3" :class="$clicks >= 3 ? 'opacity-100' : 'opacity-30 transition-opacity'">
+      <p class="text-lg text-gray-600 leading-snug">
+        The <strong>Probability Distribution</strong> gives us the final prediction: A ranking of all possible tokens that might come next.
+      </p>
+    </div>
   </div>
 
 </div>
@@ -419,6 +440,74 @@ The model doesn't return a single character. It returns a "ranking" of all possi
     </div>
   </div>
 </div>
+
+---
+layout: two-cols
+layoutClass: gap-12
+---
+
+::left::
+
+# Activation Function
+
+<div class="flex flex-col space-y-4 mt-8">
+  <div class="p-4 border-2 border-gray-200 rounded-lg bg-gray-50">
+    <h3 class="text-lg font-bold text-gray-700 mb-2">Raw Logits</h3>
+    <div class="font-mono text-sm text-gray-600 space-y-1">
+      <div class="flex justify-between"><span>Token 'e':</span><span>4.2</span></div>
+      <div class="flex justify-between"><span>Token 'a':</span><span>-1.5</span></div>
+      <div class="flex justify-between"><span>Token 'i':</span><span>0.3</span></div>
+      <div class="flex justify-between text-gray-400"><span>...others:</span><span>...</span></div>
+    </div>
+  </div>
+  <div v-click="1" class="flex flex-col space-y-4">
+    <div class="text-center text-xl text-purple-600 font-bold">↓ Softmax ↓</div>
+    <div class="p-4 border-2 border-purple-200 rounded-lg bg-purple-50 shadow-sm">
+      <h3 class="text-lg font-bold text-purple-700 mb-2">Probabilities</h3>
+      <div class="font-mono text-sm text-gray-600 space-y-1">
+        <div class="flex justify-between"><span>Token 'e':</span><span class="text-emerald-600 font-bold">0.82</span></div>
+        <div class="flex justify-between"><span>Token 'a':</span><span>0.05</span></div>
+        <div class="flex justify-between"><span>Token 'i':</span><span>0.03</span></div>
+        <div class="flex justify-between text-gray-400"><span>...others:</span><span>0.10</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+::right::
+
+<div class="flex flex-col justify-center h-full space-y-4 mt-2">
+  <div>
+    <p class="text-gray-600 mt-2">
+      To get a probability distribution, we need our raw numbers (logits) to follow two rules:
+    </p>
+    <ul class="list-decimal pl-6 mt-2 text-gray-600 font-semibold">
+      <li>They must all be positive.</li>
+      <li>They must sum to 1.0 (100%).</li>
+    </ul>
+  </div>
+
+  <div v-click="1">
+    <h3 class="font-bold text-purple-600 text-xl">The Softmax Function</h3>
+    <p class="text-gray-600 mt-2 text-sm leading-relaxed">
+      Softmax is our final <strong>Activation Function</strong>. It takes the arbitrary raw output scores of our computation graph and transforms them into a valid probability distribution.
+    </p>
+  </div>
+  <div v-click="2">
+    <h3 class="font-bold text-orange-600 text-xl">Why?</h3>
+      <ul class="list-decimal pl-6 mt-2 text-gray-600">
+        <li>Nonlinearity</li>
+        <li>Stationarity</li>
+        <li>Differentiability</li>
+      </ul>
+  </div>
+</div>
+
+<!--
+Nonlinearity: If all operations are linear, stacking them is useless (they collapse into a single linear operation). We need nonlinear functions to learn complex representations.
+Stationarity: The output remains stable across iterations. It maps arbitrary outputs to a fixed 0-to-1 range.
+Differentiability: To use backpropagation, we need to calculate smooth gradients. Functions like Softmax have mathematical derivatives that let our network learn.
+-->
 
 ---
 layout: two-cols
