@@ -57,6 +57,7 @@ class: bg-[#e8e4df]
 
 <div class="flex justify-center mt-10">
 <table class="program-elements-table">
+<tbody>
   <tr v-click="1">
     <td class="font-bold w-40">Tokenizer</td>
     <td>Translates strings into integers</td>
@@ -81,6 +82,7 @@ class: bg-[#e8e4df]
     <td class="font-bold w-40">Optimizer</td>
     <td>Learning rate, Parameter updates</td>
   </tr>
+</tbody>
 </table>
 </div>
 
@@ -139,6 +141,78 @@ class: bg-[#e8e4df]
   transform: translateY(10px);
 }
 </style>
+
+---
+layout: two-cols
+layoutClass: gap-10
+clicks: 4
+---
+
+::left::
+
+<div class="flex flex-col items-center justify-center h-full space-y-1 mt-4">
+  <div class="w-full px-4 py-2 border-2 border-emerald-600 rounded bg-emerald-50 font-mono text-center shadow-sm opacity-80">Tokens</div>
+  <div class="text-xl text-gray-400">↓</div>
+  <div class="w-full px-4 py-2 border-2 border-blue-600 rounded bg-blue-50 text-center shadow-sm opacity-80"
+    :class="$clicks === 1 ? 'border-4 border-blue-600 bg-blue-50 font-bold shadow-md scale-105' : 'border-2 border-blue-400 bg-blue-50/50 shadow-sm'"
+  >
+    Embeddings</div>
+  <div class="text-xl text-gray-400">↓</div>
+  <!-- Highlighted State: Click 1 -->
+  <div
+    class="w-full px-4 py-2 rounded text-center transition-all duration-300"
+    :class="$clicks === 2 ? 'border-4 border-orange-600 bg-orange-50 font-bold shadow-md scale-105' : 'border-2 border-orange-400 bg-orange-50/50 shadow-sm'"
+  >
+    Computation Graph
+  </div>
+  <div class="text-xl text-gray-400">↓</div>
+  <!-- Highlighted State: Click 2 -->
+  <div
+    class="w-full px-4 py-2 rounded text-center transition-all duration-300"
+    :class="$clicks === 3 ? 'border-4 border-purple-600 bg-purple-50 font-bold shadow-md scale-105' : 'border-2 border-purple-400 bg-purple-50/50 shadow-sm'"
+  >
+    Activation Function
+  </div>
+  <div class="text-xl text-gray-400">↓</div>
+  <!-- Highlighted State: Click 3 -->
+  <div
+    class="w-full px-4 py-2 rounded text-center transition-all duration-300"
+    :class="$clicks >= 4 ? 'border-4 border-red-600 bg-red-50 font-bold shadow-md scale-105' : 'border-2 border-red-400 bg-red-50/50 shadow-sm'"
+  >
+    Probability Distribution
+  </div>
+</div>
+
+::right::
+
+<div class="flex flex-col justify-center h-full">
+  <h1 class="text-5xl font-bold mb-2">The Flow</h1>
+  <p class="text-lg text-gray-500 mb-8">How do we transform text into a probability distribution?</p>
+
+  <div class="space-y-6">
+    <div v-click="1" :class="$clicks === 1 ? 'opacity-100' : 'opacity-30 transition-opacity'">
+      <p class="text-lg text-gray-600 leading-snug">
+        The <strong>Embedding</strong> is a vector of floats storing what we have learned about the meaning of the token.
+      </p>
+    </div>
+    <div v-click="2" :class="$clicks === 2 ? 'opacity-100' : 'opacity-30 transition-opacity'">
+      <p class="text-lg text-gray-600 leading-snug">
+        The <strong>Computation Graph</strong> is a chain of math operations. To improve, we must calculate the gradient of every variable.
+      </p>
+    </div>
+    <div v-click="3" :class="$clicks === 3 ? 'opacity-100' : 'opacity-30 transition-opacity'">
+      <p class="text-lg text-gray-600 leading-snug">
+        The <strong>Activation Function</strong> turns arbitrary numbers into structured values. It introduces non-linearity and transforms the data space.
+      </p>
+    </div>
+    <div v-click="4" :class="$clicks >= 4 ? 'opacity-100' : 'opacity-30 transition-opacity'">
+      <p class="text-lg text-gray-600 leading-snug">
+        The <strong>Probability Distribution</strong> gives us the final prediction: A ranking of all possible tokens that might come next.
+      </p>
+    </div>
+  </div>
+
+</div>
 
 ---
 layout: two-cols
@@ -336,70 +410,6 @@ We want our model to learn one thing: **Predict the next token.**
   font-size: 0.875rem;
 }
 </style>
-
----
-layout: two-cols
-layoutClass: gap-10
-clicks: 3
----
-
-::left::
-
-<div class="flex flex-col items-center justify-center h-full space-y-1 mt-4">
-  <div class="w-full px-4 py-2 border-2 border-emerald-600 rounded bg-emerald-50 font-mono text-center shadow-sm opacity-80">Tokens</div>
-  <div class="text-xl text-gray-400">↓</div>
-  <div class="w-full px-4 py-2 border-2 border-blue-600 rounded bg-blue-50 text-center shadow-sm opacity-80">Embeddings</div>
-  <div class="text-xl text-gray-400">↓</div>
-  <!-- Highlighted State: Click 1 -->
-  <div
-    class="w-full px-4 py-2 rounded text-center transition-all duration-300"
-    :class="$clicks === 1 ? 'border-4 border-orange-600 bg-orange-50 font-bold shadow-md scale-105' : 'border-2 border-orange-400 bg-orange-50/50 shadow-sm'"
-  >
-    Computation Graph
-  </div>
-  <div class="text-xl text-gray-400">↓</div>
-  <!-- Highlighted State: Click 2 -->
-  <div
-    class="w-full px-4 py-2 rounded text-center transition-all duration-300"
-    :class="$clicks === 2 ? 'border-4 border-purple-600 bg-purple-50 font-bold shadow-md scale-105' : 'border-2 border-purple-400 bg-purple-50/50 shadow-sm'"
-  >
-    Activation Function
-  </div>
-  <div class="text-xl text-gray-400">↓</div>
-  <!-- Highlighted State: Click 3 -->
-  <div
-    class="w-full px-4 py-2 rounded text-center transition-all duration-300"
-    :class="$clicks >= 3 ? 'border-4 border-red-600 bg-red-50 font-bold shadow-md scale-105' : 'border-2 border-red-400 bg-red-50/50 shadow-sm'"
-  >
-    Probability Distribution
-  </div>
-</div>
-
-::right::
-
-<div class="flex flex-col justify-center h-full">
-  <h1 class="text-5xl font-bold mb-2">The Flow</h1>
-  <p class="text-lg text-gray-500 mb-8">How do we transform integers into a distribution?</p>
-
-  <div class="space-y-6">
-    <div v-click="1" :class="$clicks === 1 ? 'opacity-100' : 'opacity-30 transition-opacity'">
-      <p class="text-lg text-gray-600 leading-snug">
-        The <strong>Computation Graph</strong> is a chain of math operations. To improve, we must calculate the gradient of every variable.
-      </p>
-    </div>
-    <div v-click="2" :class="$clicks === 2 ? 'opacity-100' : 'opacity-30 transition-opacity'">
-      <p class="text-lg text-gray-600 leading-snug">
-        The <strong>Activation Function</strong> turns arbitrary numbers into structured values. It introduces non-linearity and transforms the data space.
-      </p>
-    </div>
-    <div v-click="3" :class="$clicks >= 3 ? 'opacity-100' : 'opacity-30 transition-opacity'">
-      <p class="text-lg text-gray-600 leading-snug">
-        The <strong>Probability Distribution</strong> gives us the final prediction: A ranking of all possible tokens that might come next.
-      </p>
-    </div>
-  </div>
-
-</div>
 
 ---
 layout: default
