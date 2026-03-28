@@ -33,164 +33,142 @@ Introduction
 transition: slide-up
 ---
 
-# The Bird's Eye View
+# Opening the Box
 
-At its simplest, an LLM is a machine that transforms one sequence of text into another.
-
-<div class="flex items-center justify-center mt-24 space-x-8 h-48 relative">
-
-  <!-- Input Block -->
-  <div class="flex flex-col items-center shrink-0">
-    <div class="w-32 h-20 border-4 border-gray-300 rounded-xl bg-gray-50 flex items-center justify-center shadow-md">
-      <span class="text-xl font-bold text-gray-600 uppercase tracking-widest">Text</span>
+<div class="mt-6 flex flex-col items-center">
+  <div class="grid grid-cols-[8.25rem_auto_9rem_auto_8.25rem] gap-3 items-start w-full max-w-4xl">
+    <div class="flex flex-col items-center">
+      <div class="w-full h-[4.5rem] border-2 border-gray-300 rounded-2xl bg-gray-50 flex items-center justify-center shadow-sm">
+        <span class="text-base font-bold text-gray-600 uppercase tracking-widest">Text</span>
+      </div>
+      <div class="mt-2 text-[10px] font-bold text-gray-400 uppercase tracking-widest">Input</div>
     </div>
-    <div class="mt-4 text-[10px] font-bold text-gray-400 uppercase tracking-widest">Input</div>
+    <div class="flex justify-center pt-[1.75rem] transition-all duration-700" :class="$clicks >= 1 ? '-translate-x-2' : ''">
+      <div class="w-0 h-0 border-y-[8px] border-y-transparent border-l-[12px] border-l-gray-300"></div>
+    </div>
+    <div class="flex flex-col items-center">
+      <div
+        class="w-full h-[4.5rem] border-4 rounded-2xl flex items-center justify-center shadow-lg transition-all duration-700"
+        :class="$clicks >= 1 ? 'border-blue-600 bg-blue-100 scale-110 ring-8 ring-blue-100 shadow-xl' : 'border-blue-400 bg-blue-50 scale-100 shadow-md'"
+      >
+        <span class="text-lg font-black text-blue-600 uppercase tracking-[0.18em]">LLM</span>
+      </div>
+    </div>
+    <div class="flex justify-center pt-[1.75rem] transition-all duration-700" :class="$clicks >= 1 ? 'translate-x-2' : ''">
+      <div class="w-0 h-0 border-y-[8px] border-y-transparent border-l-[12px] border-l-gray-300"></div>
+    </div>
+    <div class="flex flex-col items-center">
+      <div class="w-full h-[4.5rem] border-2 border-gray-300 rounded-2xl bg-gray-50 flex items-center justify-center shadow-sm">
+        <span class="text-base font-bold text-gray-600 uppercase tracking-widest">Text</span>
+      </div>
+      <div class="mt-2 text-[10px] font-bold text-gray-400 uppercase tracking-widest">Output</div>
+    </div>
   </div>
-
-  <!-- Arrow 1 -->
-  <div class="text-3xl text-gray-300 font-bold">→</div>
-
-  <!-- Middle Section: LLM vs Encoder/Decoder -->
-  <div class="relative w-[450px] h-full flex items-center justify-center">
-    <!-- Phase 1: The LLM "Black Box" -->
+  <div class="relative w-full max-w-5xl mt-3 min-h-[230px] border border-slate-200 rounded-[2rem] bg-slate-50 shadow-inner overflow-hidden">
     <div
       class="absolute inset-0 flex flex-col items-center justify-center transition-all duration-700"
-      :class="$clicks >= 1 ? 'opacity-0 scale-75 blur-sm pointer-events-none' : 'opacity-100 scale-100'"
+      :class="$clicks >= 1 ? 'opacity-0 scale-90 blur-sm pointer-events-none' : 'opacity-100 scale-100'"
     >
-      <div class="w-56 h-36 border-4 border-blue-500 rounded-2xl bg-blue-50 flex items-center justify-center shadow-xl ring-8 ring-blue-50">
-        <span class="text-4xl font-black text-blue-600 uppercase tracking-[0.2em]">LLM</span>
+      <div class="w-[25rem] h-32 border-4 border-blue-500 rounded-[1.75rem] bg-blue-50 flex flex-col items-center justify-center shadow-xl">
+        <div class="text-3xl font-black text-blue-600 uppercase tracking-[0.18em]">LLM</div>
       </div>
-      <div class="mt-4 text-xs font-bold text-blue-400 uppercase tracking-widest">The Black Box</div>
     </div>
-    <!-- Phase 2: Breaking Apart (Encoder -> Decoder) -->
     <div
-      class="absolute inset-0 flex items-center justify-center space-x-6 transition-all duration-700 delay-200"
-      :class="$clicks >= 1 ? 'opacity-100 scale-100' : 'opacity-0 scale-110 blur-md pointer-events-none'"
+      class="absolute inset-0 flex items-center justify-center gap-8 px-10 transition-all duration-700 delay-150"
+      :class="$clicks >= 1 ? 'opacity-100 scale-100' : 'opacity-0 scale-105 blur-sm pointer-events-none'"
     >
-      <!-- Encoder -->
       <div class="flex flex-col items-center">
-        <div class="w-40 h-28 border-4 border-blue-400 rounded-xl bg-blue-50 flex items-center justify-center shadow-lg">
-          <span class="text-xl font-bold text-blue-600 uppercase tracking-widest">Encoder</span>
+        <div class="w-52 h-32 border-4 border-blue-400 rounded-[1.5rem] bg-blue-50 flex items-center justify-center shadow-lg">
+          <span class="text-2xl font-black text-blue-600 uppercase tracking-[0.14em]">Encoder</span>
         </div>
-        <div class="mt-4 text-[10px] font-bold text-blue-400 uppercase tracking-widest">Understanding</div>
       </div>
-      <!-- Internal Arrow -->
-      <div class="text-3xl text-blue-300 font-bold">→</div>
-      <!-- Decoder -->
+      <div class="text-4xl text-blue-300 font-bold">→</div>
       <div class="flex flex-col items-center">
-        <div class="w-40 h-28 border-4 border-indigo-400 rounded-xl bg-indigo-50 flex items-center justify-center shadow-lg">
-          <span class="text-xl font-bold text-indigo-600 uppercase tracking-widest">Decoder</span>
+        <div class="w-52 h-32 border-4 border-indigo-400 rounded-[1.5rem] bg-indigo-50 flex items-center justify-center shadow-lg">
+          <span class="text-2xl font-black text-indigo-600 uppercase tracking-[0.14em]">Decoder</span>
         </div>
-        <div class="mt-4 text-[10px] font-bold text-indigo-400 uppercase tracking-widest">Generation</div>
       </div>
     </div>
-
   </div>
-
-  <!-- Arrow 2 -->
-  <div class="text-3xl text-gray-300 font-bold">→</div>
-
-  <!-- Output Block -->
-  <div class="flex flex-col items-center shrink-0">
-    <div class="w-32 h-20 border-4 border-gray-300 rounded-xl bg-gray-50 flex items-center justify-center shadow-md">
-      <span class="text-xl font-bold text-gray-600 uppercase tracking-widest">Text</span>
-    </div>
-    <div class="mt-4 text-[10px] font-bold text-gray-400 uppercase tracking-widest">Output</div>
-  </div>
-
 </div>
 
-<div class="mt-12 text-center text-gray-400 italic">
-  <span v-if="$clicks == 0">"How do we turn those words into math, and that math back into words?"</span>
-  <span v-else class="text-blue-500 font-bold">Inside the box, we separate the "What is this?" from the "What comes next?"</span>
-</div>
-
-<!-- Ensure click 1 exists -->
 <div v-click="1" class="hidden"></div>
 
 ---
 transition: slide-up
 ---
 
-# Inside the Encoder
+# A Zoomable Map
 
-The first step is turning raw text into a format the math can "see."
+Keep the outer journey fixed. Only open the stage we are currently discussing.
 
-<div class="flex items-center justify-center mt-24 space-x-6 h-48 relative px-4">
-
-  <!-- Input Block (Shrinking slightly but not dimming) -->
-  <div class="flex flex-col items-center shrink-0 transition-all duration-700" :class="$clicks >= 1 ? 'scale-75' : ''">
-    <div class="w-32 h-20 border-2 border-gray-300 rounded-xl bg-gray-50 flex items-center justify-center shadow-sm">
-      <span class="text-lg font-bold text-gray-500 uppercase tracking-widest">Text</span>
+<div class="mt-6 flex flex-col items-center">
+  <div class="grid grid-cols-[8.25rem_auto_9rem_auto_9rem_auto_8.25rem] gap-3 items-start w-full max-w-5xl">
+    <div class="flex flex-col items-center">
+      <div class="w-full h-[4.5rem] border-2 border-gray-300 rounded-2xl bg-gray-50 flex items-center justify-center shadow-sm">
+        <span class="text-base font-bold text-gray-600 uppercase tracking-widest">Text</span>
+      </div>
+      <div class="mt-2 text-[10px] font-bold text-gray-400 uppercase tracking-widest">Input</div>
     </div>
-    <div class="mt-4 text-[8px] font-bold text-gray-400 uppercase tracking-widest">Input</div>
+    <div class="flex justify-center pt-[1.75rem] transition-all duration-700" :class="$clicks >= 1 ? '-translate-x-2' : ''">
+      <div class="w-0 h-0 border-y-[8px] border-y-transparent border-l-[12px] border-l-gray-300"></div>
+    </div>
+    <div class="flex flex-col items-center">
+      <div
+        class="w-full h-[4.5rem] border-4 rounded-2xl flex items-center justify-center shadow-lg transition-all duration-700"
+        :class="$clicks >= 1 ? 'border-blue-600 bg-blue-100 scale-110 ring-8 ring-blue-100 shadow-xl' : 'border-blue-400 bg-blue-50 scale-100 shadow-md'"
+      >
+        <span class="text-lg font-black text-blue-600 uppercase tracking-[0.12em]">Represent</span>
+      </div>
+    </div>
+    <div class="flex justify-center pt-[1.75rem] transition-all duration-700" :class="$clicks >= 1 ? 'translate-x-2' : ''">
+      <div class="w-0 h-0 border-y-[8px] border-y-transparent border-l-[12px] border-l-gray-300"></div>
+    </div>
+    <div class="flex flex-col items-center opacity-80">
+      <div class="w-full h-[4.5rem] border-2 border-indigo-300 rounded-2xl bg-indigo-50 flex items-center justify-center shadow-sm">
+        <span class="text-lg font-bold text-indigo-500 uppercase tracking-widest">Predict</span>
+      </div>
+    </div>
+    <div class="flex justify-center pt-[1.75rem]">
+      <div class="w-0 h-0 border-y-[8px] border-y-transparent border-l-[12px] border-l-gray-300"></div>
+    </div>
+    <div class="flex flex-col items-center">
+      <div class="w-full h-[4.5rem] border-2 border-gray-300 rounded-2xl bg-gray-50 flex items-center justify-center shadow-sm">
+        <span class="text-base font-bold text-gray-600 uppercase tracking-widest">Text</span>
+      </div>
+      <div class="mt-2 text-[10px] font-bold text-gray-400 uppercase tracking-widest">Output</div>
+    </div>
   </div>
 
-  <!-- Arrow -->
-  <div class="text-2xl text-gray-300 font-bold transition-all duration-700" :class="$clicks >= 1 ? 'scale-75' : ''">→</div>
-
-  <!-- Encoder Internals -->
-  <div class="relative w-[500px] h-full flex items-center justify-center">
-    <!-- Phase 1: The Encoder Box -->
+  <div class="relative w-full max-w-5xl mt-3 min-h-[230px] border border-slate-200 rounded-[2rem] bg-slate-50 shadow-inner overflow-hidden">
     <div
       class="absolute inset-0 flex flex-col items-center justify-center transition-all duration-700"
-      :class="$clicks >= 1 ? 'opacity-0 scale-90 blur-sm pointer-events-none' : 'opacity-100'"
+      :class="$clicks >= 1 ? 'opacity-0 scale-90 blur-sm pointer-events-none' : 'opacity-100 scale-100'"
     >
-      <div class="w-48 h-32 border-4 border-blue-400 rounded-xl bg-blue-50 flex items-center justify-center shadow-lg">
-        <span class="text-2xl font-bold text-blue-600 uppercase tracking-widest">Encoder</span>
+      <div class="w-[25rem] h-32 border-4 border-blue-500 rounded-[1.75rem] bg-blue-50 flex flex-col items-center justify-center shadow-xl">
+        <div class="text-3xl font-black text-blue-600 uppercase tracking-[0.18em]">Represent</div>
+        <div class="mt-3 text-sm text-blue-500 font-semibold">Turn raw text into machine-usable state</div>
       </div>
-      <div class="mt-4 text-[10px] font-bold text-blue-400 uppercase tracking-widest">Understanding</div>
     </div>
-    <!-- Phase 2: Tokens -> Embeddings -->
     <div
-      class="absolute inset-0 flex items-center justify-center space-x-6 transition-all duration-700 delay-200"
-      :class="$clicks >= 1 ? 'opacity-100 scale-100' : 'opacity-0 scale-110 blur-md pointer-events-none'"
+      class="absolute inset-0 flex items-center justify-center gap-8 px-10 transition-all duration-700 delay-150"
+      :class="$clicks >= 1 ? 'opacity-100 scale-100' : 'opacity-0 scale-105 blur-sm pointer-events-none'"
     >
-      <!-- Tokens -->
       <div class="flex flex-col items-center">
-        <div class="w-40 h-28 border-4 border-emerald-400 rounded-xl bg-emerald-50 flex items-center justify-center shadow-md">
-          <span class="text-xl font-bold text-emerald-600 uppercase tracking-widest">Tokens</span>
+        <div class="w-52 h-32 border-4 border-emerald-400 rounded-[1.5rem] bg-emerald-50 flex items-center justify-center shadow-lg">
+          <span class="text-2xl font-black text-emerald-600 uppercase tracking-[0.14em]">Tokens</span>
         </div>
-        <div class="mt-4 text-[10px] font-bold text-emerald-400 uppercase tracking-widest">Integers</div>
+        <div class="mt-4 text-[10px] font-bold text-emerald-400 uppercase tracking-widest">Discrete IDs</div>
       </div>
-      <div class="text-2xl text-emerald-300 font-bold">→</div>
-      <!-- Embeddings -->
+      <div class="text-4xl text-blue-300 font-bold">→</div>
       <div class="flex flex-col items-center">
-        <div class="w-40 h-28 border-4 border-blue-400 rounded-xl bg-blue-50 flex items-center justify-center shadow-md">
-          <span class="text-xl font-bold text-blue-600 uppercase tracking-widest opacity-100">Embeddings</span>
+        <div class="w-52 h-32 border-4 border-blue-400 rounded-[1.5rem] bg-blue-50 flex items-center justify-center shadow-lg">
+          <span class="text-2xl font-black text-blue-600 uppercase tracking-[0.14em]">Embeddings</span>
         </div>
-        <div class="mt-4 text-[10px] font-bold text-blue-400 uppercase tracking-widest">Vectors</div>
+        <div class="mt-4 text-[10px] font-bold text-blue-400 uppercase tracking-widest">Dense Vectors</div>
       </div>
     </div>
   </div>
-
-  <!-- Arrow (Connecting to Decoder) -->
-  <div class="text-2xl text-indigo-200 font-bold transition-all duration-700" :class="$clicks >= 1 ? 'scale-75' : ''">→</div>
-
-  <!-- Decoder (Shrinking slightly but not dimming) -->
-  <div class="flex flex-col items-center transition-all duration-700" :class="$clicks >= 1 ? 'scale-75' : ''">
-    <div class="w-32 h-20 border-2 border-indigo-400 rounded-xl bg-indigo-50 flex items-center justify-center shadow-sm">
-      <span class="text-lg font-bold text-indigo-400 uppercase tracking-widest">Decoder</span>
-    </div>
-    <div class="mt-4 text-[8px] font-bold text-indigo-300 uppercase tracking-widest">Generation</div>
-  </div>
-
-  <!-- Arrow (Connecting to Output) -->
-  <div class="text-2xl text-emerald-200 font-bold transition-all duration-700" :class="$clicks >= 1 ? 'hidden' : ''">→</div>
-
-  <!-- Output Text (Shrinking slightly but not dimming) -->
-  <div class="flex flex-col items-center shrink-0 transition-all duration-700" :class="$clicks >= 1 ? 'scale-75' : ''">
-    <div class="w-32 h-20 border-2 border-gray-300 rounded-xl bg-gray-50 flex items-center justify-center shadow-sm">
-      <span class="text-lg font-bold text-gray-500 uppercase tracking-widest">Text</span>
-    </div>
-    <div class="mt-4 text-[8px] font-bold text-gray-400 uppercase tracking-widest">Output</div>
-  </div>
-
-</div>
-
-<div class="mt-12 text-center text-gray-400 italic">
-  <span v-if="$clicks == 0">"We need to go deeper into how the machine 'reads'..."</span>
-  <span v-else class="text-emerald-600 font-bold">The Encoder first chops text into <strong>Tokens</strong>, then translates them into <strong>Embeddings</strong> (high-dimensional math vectors).</span>
 </div>
 
 <div v-click="1" class="hidden"></div>
@@ -208,84 +186,6 @@ transition: slide-up
 ..
 <br>
 That's it
-
----
-layout: two-cols
-layoutClass: gap-10
-clicks: 5
----
-
-::left::
-
-<div class="flex flex-col items-center justify-center h-full space-y-1 mt-4">
-  <div class="w-full px-4 py-2 border-2 border-emerald-600 rounded bg-emerald-50 font-mono text-center shadow-sm opacity-80"
-    :class="$clicks === 1 ? 'border-4 border-emerald-600 bg-emerald-50 font-bold shadow-md scale-105' : 'border-2 border-emerald-400 bg-emerald-50/50 shadow-sm'""
-  >
-  Tokens</div>
-  <div class="text-xl text-gray-400">↓</div>
-  <div class="w-full px-4 py-2 border-2 border-blue-600 rounded bg-blue-50 text-center shadow-sm opacity-80"
-    :class="$clicks === 2 ? 'border-4 border-blue-600 bg-blue-50 font-bold shadow-md scale-105' : 'border-2 border-blue-400 bg-blue-50/50 shadow-sm'"
-  >
-    Embeddings</div>
-  <div class="text-xl text-gray-400">↓</div>
-  <!-- Highlighted State: Click 1 -->
-  <div
-    class="w-full px-4 py-2 rounded text-center transition-all duration-300"
-    :class="$clicks === 3 ? 'border-4 border-orange-600 bg-orange-50 font-bold shadow-md scale-105' : 'border-2 border-orange-400 bg-orange-50/50 shadow-sm'"
-  >
-    Computation Graph
-  </div>
-  <div class="text-xl text-gray-400">↓</div>
-  <!-- Highlighted State: Click 2 -->
-  <div
-    class="w-full px-4 py-2 rounded text-center transition-all duration-300"
-    :class="$clicks === 4 ? 'border-4 border-purple-600 bg-purple-50 font-bold shadow-md scale-105' : 'border-2 border-purple-400 bg-purple-50/50 shadow-sm'"
-  >
-    Activation Function
-  </div>
-  <div class="text-xl text-gray-400">↓</div>
-  <!-- Highlighted State: Click 3 -->
-  <div
-    class="w-full px-4 py-2 rounded text-center transition-all duration-300"
-    :class="$clicks >= 5 ? 'border-4 border-red-600 bg-red-50 font-bold shadow-md scale-105' : 'border-2 border-red-400 bg-red-50/50 shadow-sm'"
-  >
-    Probability Distribution
-  </div>
-</div>
-
-::right::
-
-<div class="flex flex-col justify-center h-full">
-  <h1 class="text-5xl font-bold mb-2">The Flow</h1>
-  <div class="space-y-6">
-    <div v-click="1" :class="$clicks === 1 ? 'opacity-100' : 'opacity-30 transition-opacity'">
-      <p class="text-lg text-gray-600 leading-snug">
-        <strong>Tokens</strong> map our unstructured text into semi-structured text blocks.
-      </p>
-    </div>
-    <div v-click="2" :class="$clicks === 2 ? 'opacity-100' : 'opacity-30 transition-opacity'">
-      <p class="text-lg text-gray-600 leading-snug">
-        The <strong>Embedding</strong> is a vector of floats storing what we have learned about the meaning of the token.
-      </p>
-    </div>
-    <div v-click="3" :class="$clicks === 3 ? 'opacity-100' : 'opacity-30 transition-opacity'">
-      <p class="text-lg text-gray-600 leading-snug">
-        The <strong>Computation Graph</strong> is a chain of math operations. To improve, we must calculate the gradient of every variable.
-      </p>
-    </div>
-    <div v-click="4" :class="$clicks === 4 ? 'opacity-100' : 'opacity-30 transition-opacity'">
-      <p class="text-lg text-gray-600 leading-snug">
-        The <strong>Activation Function</strong> turns arbitrary numbers into structured values. It introduces non-linearity and transforms the data space.
-      </p>
-    </div>
-    <div v-click="5" :class="$clicks >= 5 ? 'opacity-100' : 'opacity-30 transition-opacity'">
-      <p class="text-lg text-gray-600 leading-snug">
-        The <strong>Probability Distribution</strong> gives us the final prediction: A ranking of all possible tokens that might come next.
-      </p>
-    </div>
-  </div>
-
-</div>
 
 ---
 layout: two-cols
@@ -593,6 +493,94 @@ We want our model to learn one thing: **Predict the next token.**
   font-size: 0.875rem;
 }
 </style>
+
+---
+layout: default
+---
+
+# Opening Predict
+
+<div class="mt-6 flex flex-col items-center">
+  <div class="grid grid-cols-[8.25rem_auto_9rem_auto_9rem_auto_8.25rem] gap-3 items-start w-full max-w-5xl">
+    <div class="flex flex-col items-center">
+      <div class="w-full h-[4.5rem] border-2 border-gray-300 rounded-2xl bg-gray-50 flex items-center justify-center shadow-sm">
+        <span class="text-base font-bold text-gray-600 uppercase tracking-widest">Text</span>
+      </div>
+      <div class="mt-2 text-[10px] font-bold text-gray-400 uppercase tracking-widest">Input</div>
+    </div>
+    <div class="flex justify-center pt-[1.75rem]">
+      <div class="w-0 h-0 border-y-[8px] border-y-transparent border-l-[12px] border-l-gray-300"></div>
+    </div>
+    <div class="flex flex-col items-center opacity-80">
+      <div class="relative w-full h-[4.5rem] border-2 border-blue-300 rounded-2xl bg-blue-50 flex items-center justify-center shadow-sm">
+        <span class="text-lg font-bold text-blue-500 uppercase tracking-widest">Represent</span>
+        <div class="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1 opacity-80">
+          <div class="w-5 h-1 rounded-full bg-emerald-400"></div>
+          <div class="w-5 h-1 rounded-full bg-blue-400"></div>
+        </div>
+      </div>
+    </div>
+    <div class="flex justify-center pt-[1.75rem] transition-all duration-700" :class="$clicks >= 1 ? '-translate-x-2' : ''">
+      <div class="w-0 h-0 border-y-[8px] border-y-transparent border-l-[12px] border-l-gray-300"></div>
+    </div>
+    <div class="flex flex-col items-center">
+      <div
+        class="w-full h-[4.5rem] border-4 rounded-2xl flex items-center justify-center shadow-lg transition-all duration-700"
+        :class="$clicks >= 1 ? 'border-indigo-600 bg-indigo-100 scale-110 ring-8 ring-indigo-100 shadow-xl' : 'border-indigo-400 bg-indigo-50 scale-100 shadow-md'"
+      >
+        <span class="text-lg font-black text-indigo-600 uppercase tracking-[0.12em]">Predict</span>
+      </div>
+    </div>
+    <div class="flex justify-center pt-[1.75rem] transition-all duration-700" :class="$clicks >= 1 ? 'translate-x-2' : ''">
+      <div class="w-0 h-0 border-y-[8px] border-y-transparent border-l-[12px] border-l-gray-300"></div>
+    </div>
+    <div class="flex flex-col items-center">
+      <div class="w-full h-[4.5rem] border-2 border-gray-300 rounded-2xl bg-gray-50 flex items-center justify-center shadow-sm">
+        <span class="text-base font-bold text-gray-600 uppercase tracking-widest">Text</span>
+      </div>
+      <div class="mt-2 text-[10px] font-bold text-gray-400 uppercase tracking-widest">Output</div>
+    </div>
+  </div>
+
+  <div class="relative w-full max-w-6xl mt-3 min-h-[230px] border border-slate-200 rounded-[2rem] bg-slate-50 shadow-inner overflow-hidden">
+    <div
+      class="absolute inset-0 flex flex-col items-center justify-center transition-all duration-700"
+      :class="$clicks >= 1 ? 'opacity-0 scale-90 blur-sm pointer-events-none' : 'opacity-100 scale-100'"
+    >
+      <div class="w-[25rem] h-32 border-4 border-indigo-500 rounded-[1.75rem] bg-indigo-50 flex flex-col items-center justify-center shadow-xl">
+        <div class="text-3xl font-black text-indigo-600 uppercase tracking-[0.18em]">Predict</div>
+      </div>
+    </div>
+    <div
+      class="absolute inset-0 flex items-center justify-center gap-5 px-8 transition-all duration-700 delay-150"
+      :class="$clicks >= 1 ? 'opacity-100 scale-100' : 'opacity-0 scale-105 blur-sm pointer-events-none'"
+    >
+      <div class="flex flex-col items-center">
+        <div class="w-54 h-32 border-4 border-orange-400 rounded-[1.5rem] bg-orange-50 flex items-center justify-center shadow-lg px-4">
+          <span class="text-xl font-black text-orange-600 uppercase tracking-[0.08em] text-center">Computation Graph</span>
+        </div>
+      </div>
+      <div class="flex justify-center">
+        <div class="w-0 h-0 border-y-[10px] border-y-transparent border-l-[14px] border-l-gray-300"></div>
+      </div>
+      <div class="flex flex-col items-center">
+        <div class="w-54 h-32 border-4 border-purple-400 rounded-[1.5rem] bg-purple-50 flex items-center justify-center shadow-lg px-4">
+          <span class="text-xl font-black text-purple-600 uppercase tracking-[0.08em] text-center">Activation Function</span>
+        </div>
+      </div>
+      <div class="flex justify-center">
+        <div class="w-0 h-0 border-y-[10px] border-y-transparent border-l-[14px] border-l-gray-300"></div>
+      </div>
+      <div class="flex flex-col items-center">
+        <div class="w-54 h-32 border-4 border-emerald-400 rounded-[1.5rem] bg-emerald-50 flex items-center justify-center shadow-lg px-4">
+          <span class="text-xl font-black text-emerald-600 uppercase tracking-[0.08em] text-center">Probabilities</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div v-click="1" class="hidden"></div>
 
 ---
 layout: default
