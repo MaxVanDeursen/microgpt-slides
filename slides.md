@@ -1256,6 +1256,89 @@ How do tokens learn to "talk" to each other? The current token is projected into
         the structure of the multiplication, guided to 'truthy' values via backpropagation.
 -->
 
+---
+layout: default
+clicks: 2
+---
+
+# Causal Masking
+Each row is the current token asking, "Which earlier tokens am I allowed to read?"
+
+<div class="grid grid-cols-[1.15fr_0.85fr] gap-8 mt-6 items-start">
+  <div class="flex items-start gap-4">
+    <div class="pt-14 text-[10px] font-bold uppercase tracking-[0.22em] text-gray-400 [writing-mode:vertical-rl] rotate-180">Current Token</div>
+    <div>
+      <div class="grid grid-cols-4 gap-2 mb-2 ml-12">
+        <div class="text-center text-xs font-bold uppercase tracking-widest text-gray-500">The</div>
+        <div class="text-center text-xs font-bold uppercase tracking-widest text-gray-500">fuzzy</div>
+        <div class="text-center text-xs font-bold uppercase tracking-widest text-gray-500">dog</div>
+        <div class="text-center text-xs font-bold uppercase tracking-widest text-gray-500">barks</div>
+      </div>
+      <div class="grid grid-cols-[auto_repeat(4,minmax(0,1fr))] gap-2 items-center">
+        <div class="pr-3 text-right text-xs font-bold uppercase tracking-widest text-gray-500">The</div>
+        <div class="h-14 w-14 rounded-xl border-2 shadow-sm flex items-center justify-center text-lg font-black transition-all duration-400" :class="$clicks >= 2 ? 'border-emerald-300 bg-emerald-50 text-emerald-700' : 'border-gray-200 bg-gray-50 text-gray-400'">1</div>
+        <div class="h-14 w-14 rounded-xl border-2 shadow-sm flex items-center justify-center text-lg font-black transition-all duration-400" :class="$clicks >= 2 ? 'border-rose-300 bg-rose-50 text-rose-400' : 'border-gray-200 bg-gray-50 text-gray-400'">×</div>
+        <div class="h-14 w-14 rounded-xl border-2 shadow-sm flex items-center justify-center text-lg font-black transition-all duration-400" :class="$clicks >= 2 ? 'border-rose-300 bg-rose-50 text-rose-400' : 'border-gray-200 bg-gray-50 text-gray-400'">×</div>
+        <div class="h-14 w-14 rounded-xl border-2 shadow-sm flex items-center justify-center text-lg font-black transition-all duration-400" :class="$clicks >= 2 ? 'border-rose-300 bg-rose-50 text-rose-400' : 'border-gray-200 bg-gray-50 text-gray-400'">×</div>
+        <div class="pr-3 text-right text-xs font-bold uppercase tracking-widest text-gray-500">fuzzy</div>
+        <div class="h-14 w-14 rounded-xl border-2 shadow-sm flex items-center justify-center text-lg font-black transition-all duration-400" :class="$clicks >= 2 ? 'border-emerald-300 bg-emerald-50 text-emerald-700' : 'border-gray-200 bg-gray-50 text-gray-400'">1</div>
+        <div class="h-14 w-14 rounded-xl border-2 shadow-sm flex items-center justify-center text-lg font-black transition-all duration-400" :class="$clicks >= 2 ? 'border-emerald-300 bg-emerald-50 text-emerald-700' : 'border-gray-200 bg-gray-50 text-gray-400'">1</div>
+        <div class="h-14 w-14 rounded-xl border-2 shadow-sm flex items-center justify-center text-lg font-black transition-all duration-400" :class="$clicks >= 2 ? 'border-rose-300 bg-rose-50 text-rose-400' : 'border-gray-200 bg-gray-50 text-gray-400'">×</div>
+        <div class="h-14 w-14 rounded-xl border-2 shadow-sm flex items-center justify-center text-lg font-black transition-all duration-400" :class="$clicks >= 2 ? 'border-rose-300 bg-rose-50 text-rose-400' : 'border-gray-200 bg-gray-50 text-gray-400'">×</div>
+        <div class="pr-3 text-right text-xs font-bold uppercase tracking-widest text-gray-500">dog</div>
+        <div class="h-14 w-14 rounded-xl border-2 shadow-sm flex items-center justify-center text-lg font-black transition-all duration-400" :class="$clicks >= 2 ? 'border-emerald-300 bg-emerald-50 text-emerald-700' : 'border-gray-200 bg-gray-50 text-gray-400'">1</div>
+        <div class="h-14 w-14 rounded-xl border-2 shadow-sm flex items-center justify-center text-lg font-black transition-all duration-400" :class="$clicks >= 2 ? 'border-emerald-300 bg-emerald-50 text-emerald-700' : 'border-gray-200 bg-gray-50 text-gray-400'">1</div>
+        <div class="h-14 w-14 rounded-xl border-2 shadow-sm flex items-center justify-center text-lg font-black transition-all duration-400" :class="$clicks >= 2 ? 'border-emerald-300 bg-emerald-50 text-emerald-700' : 'border-gray-200 bg-gray-50 text-gray-400'">1</div>
+        <div class="h-14 w-14 rounded-xl border-2 shadow-sm flex items-center justify-center text-lg font-black transition-all duration-400" :class="$clicks >= 2 ? 'border-rose-300 bg-rose-50 text-rose-400' : 'border-gray-200 bg-gray-50 text-gray-400'">×</div>
+        <div class="pr-3 text-right text-xs font-bold uppercase tracking-widest text-gray-500">barks</div>
+        <div class="h-14 w-14 rounded-xl border-2 shadow-sm flex items-center justify-center text-lg font-black transition-all duration-400" :class="$clicks >= 2 ? 'border-emerald-300 bg-emerald-50 text-emerald-700' : 'border-gray-200 bg-gray-50 text-gray-400'">1</div>
+        <div class="h-14 w-14 rounded-xl border-2 shadow-sm flex items-center justify-center text-lg font-black transition-all duration-400" :class="$clicks >= 2 ? 'border-emerald-300 bg-emerald-50 text-emerald-700' : 'border-gray-200 bg-gray-50 text-gray-400'">1</div>
+        <div class="h-14 w-14 rounded-xl border-2 shadow-sm flex items-center justify-center text-lg font-black transition-all duration-400" :class="$clicks >= 2 ? 'border-emerald-300 bg-emerald-50 text-emerald-700' : 'border-gray-200 bg-gray-50 text-gray-400'">1</div>
+        <div class="h-14 w-14 rounded-xl border-2 shadow-sm flex items-center justify-center text-lg font-black transition-all duration-400" :class="$clicks >= 2 ? 'border-emerald-300 bg-emerald-50 text-emerald-700' : 'border-gray-200 bg-gray-50 text-gray-400'">1</div>
+      </div>
+      <div class="mt-2 ml-12 text-[10px] font-bold uppercase tracking-[0.22em] text-gray-400">Earlier Token</div>
+    </div>
+  </div>
+
+  <div class="min-h-[320px] flex flex-col justify-center">
+    <div v-click="1" class="p-5 rounded-2xl border border-gray-200 bg-gray-50/80">
+      <div class="text-sm font-bold uppercase tracking-widest text-gray-600">1. One Score Per Pair</div>
+      <p class="mt-3 text-base text-gray-700 leading-relaxed">Every row-column intersection is one attention score: how much should this token read that token?</p>
+    </div>
+    <div v-click="2" class="p-5 mt-2 rounded-2xl border border-orange-200 bg-orange-50/80" :class="$clicks === 2 ? '' : 'hidden'">
+      <div class="text-sm font-bold uppercase tracking-widest text-orange-600">2. Block the Future</div>
+      <p class="mt-3 text-base text-gray-700 leading-relaxed">The upper-right triangle is masked out, so a token can never peek at words that come later.</p>
+    </div>
+  </div>
+
+  <div class="h-0 overflow-hidden">
+    <v-click at="1" />
+    <v-click at="2" />
+  </div>
+</div>
+
+<!--- Big transformers often apply an explicit mask matrix before softmax. Microgpt gets the same effect by only storing past keys and values --->
+
+---
+layout: default
+clicks: 6
+---
+
+# The Scoring Code
+
+```python {all|1-2|3|3|4|5|all}
+k_h = [ki[hs:hs+head_dim] for ki in keys[li]]
+v_h = [vi[hs:hs+head_dim] for vi in values[li]]
+attn_logits = [sum(q_h[j] * k_h[t][j] for j in range(head_dim)) / head_dim**0.5 for t in range(len(k_h))]
+attn_weights = softmax(attn_logits)
+head_out = [sum(attn_weights[t] * v_h[t][j] for t in range(len(v_h))) for j in range(head_dim)]
+```
+
+<p v-if="$clicks >= 1" class="m-0" :class="$clicks === 1 ? 'text-blue-600' : 'text-gray-400'"><strong>1. Implicit masking:</strong> <code>keys[li]</code> and <code>values[li]</code> only contain tokens seen so far, so the future never even appears in this loop.</p>
+<p v-if="$clicks >= 2" class="m-0" :class="$clicks === 2 ? 'text-orange-600' : 'text-gray-400'"><strong>2. Raw scores:</strong> each dot product asks how strongly this query lines up with one earlier key.</p>
+<p v-if="$clicks >= 3" class="m-0" :class="$clicks === 3 ? 'text-purple-600' : 'text-gray-400'"><strong>3. Scale by <code>head_dim**0.5</code>:</strong> divide by the square root of the head width so the scores do not grow too large just because the vectors are longer.</p>
+<p v-if="$clicks >= 4" class="m-0" :class="$clicks === 4 ? 'text-emerald-600' : 'text-gray-400'"><strong>4. Softmax:</strong> turn those scores into positive weights that add up to 1, so each head makes a weighted read over the past.</p>
+<p v-if="$clicks >= 5" class="m-0" :class="$clicks === 5 ? 'text-rose-600' : 'text-gray-400'"><strong>5. Read the values:</strong> the final output is one weighted blend of the earlier <code>v</code> vectors.</p>
 
 ---
 layout: default
@@ -1320,9 +1403,9 @@ clicks: 3
 layout: default
 ---
 
-# The Literal Attention Code
+# The Full Attention Code
 
-```python {all|2-6|7-9|10|12|all}
+```python
 x_attn = []
 for h in range(n_head):
     hs = h * head_dim
@@ -1337,10 +1420,7 @@ for h in range(n_head):
 x = linear(x_attn, state_dict[f'layer{li}.attn_wo'])
 ```
 
-<p v-if="$clicks >= 1" class="m-0" :class="$clicks === 1 ? 'text-blue-600' : 'text-gray-400'"><strong>1. Slice one head:</strong> each head takes its own chunk of <code>q</code>, <code>k</code>, and <code>v</code>.</p>
-<p v-if="$clicks >= 2" class="m-0" :class="$clicks === 2 ? 'text-orange-600' : 'text-gray-400'"><strong>2. Read the context:</strong> compute attention logits, softmax them, then form one weighted sum over the values.</p>
-<p v-if="$clicks >= 3" class="m-0" :class="$clicks === 3 ? 'text-purple-600' : 'text-gray-400'"><strong>3. Concat:</strong> <code>x_attn.extend(head_out)</code> appends this head's output onto the growing combined vector.</p>
-<p v-if="$clicks >= 4" class="m-0" :class="$clicks >= 4 ? 'text-emerald-600' : 'text-gray-400'"><strong>4. Multiply by <code>W_o</code>:</strong> after all heads are concatenated, <code>linear(x_attn, ...attn_wo)</code> applies the output matrix.</p>
+<p class="text-emerald-600"><strong>Multiply by <code>W_o</code>:</strong> after all heads are concatenated, <code>linear(x_attn, ...attn_wo)</code> applies the output matrix.</p>
 
 ---
 layout: default
