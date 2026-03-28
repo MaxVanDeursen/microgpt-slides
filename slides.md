@@ -1433,7 +1433,7 @@ clicks: 3
   <div class="flex justify-center items-center gap-5">
     <div class="px-5 py-5 rounded-xl border-2 border-gray-300 bg-white shadow-sm text-center w-28">
       <div class="font-mono text-xl font-bold text-gray-700">x</div>
-      <div class="mt-1 text-[10px] uppercase tracking-widest text-gray-400">16 dims</div>
+      <div class="mt-1 text-[10px] uppercase tracking-widest text-gray-400">24 dims</div>
     </div>
     <div class="w-0 h-0 border-y-[10px] border-y-transparent border-l-[14px] border-l-gray-300"></div>
     <div class="px-6 py-5 rounded-xl border-4 border-purple-300 bg-purple-50 shadow-lg text-center w-44">
@@ -1448,7 +1448,7 @@ clicks: 3
     <div class="w-0 h-0 border-y-[10px] border-y-transparent border-l-[14px] border-l-gray-300"></div>
     <div class="px-6 py-5 rounded-xl border-4 border-blue-400 bg-blue-50 shadow-lg text-center w-44">
       <div class="text-xl font-black text-blue-700">FC2</div>
-      <div class="mt-2 text-xs font-mono text-blue-600">compress to 16</div>
+      <div class="mt-2 text-xs font-mono text-blue-600">compress to 24</div>
     </div>
   </div>
   <div class="mt-10 min-h-[220px] relative">
@@ -1495,7 +1495,7 @@ clicks: 3
       <div class="p-6 rounded-2xl border border-blue-200 bg-blue-50/70">
         <div class="text-sm font-bold uppercase tracking-widest text-blue-600">3. Cast Back to Dimensionality </div>
         <p class="mt-4 text-base text-gray-700 leading-relaxed">
-          Exactly the same as step 1, with a new matrix of size 64x16.
+          Exactly the same as step 1, with a new matrix of size 64x24.
           Without ReLU, this whole block would just be one linear transform followed by another linear transform.
           Those can be collapsed into a single matrix multiply, so the extra depth would not buy us much.
         </p>
@@ -1509,7 +1509,7 @@ clicks: 3
   </div>
 </div>
 
-<!--- For one token here, it is 1x16 times 16x64, which gives 1x64 --->
+<!--- For one token here, it is 1x24 times 24x64, which gives 1x64 --->
 
 ---
 layout: two-cols
@@ -1552,39 +1552,113 @@ x = [a + b for a, b in zip(x, x_residual)]
 
 ---
 layout: default
+clicks: 1
 ---
 
-# microGPT, Precisely
+# The Whole Loop, Revisited
 
-<div class="grid grid-cols-3 gap-6 mt-10">
-  <div class="p-6 rounded-2xl border-2 border-emerald-200 bg-emerald-50">
-    <div class="text-sm font-bold uppercase tracking-widest text-emerald-600">Tokenizer</div>
-    <div class="mt-4 text-3xl font-black text-emerald-700">Character</div>
-    <div class="mt-2 text-sm text-gray-700">plus one special BOS token</div>
+<div class="flex flex-col mt-8">
+  <div class="grid grid-cols-[7.5rem_auto_8.5rem_auto_10rem_auto_8.5rem_auto_7.5rem] gap-3 items-start w-full max-w-[68rem] mx-auto">
+    <div class="flex flex-col items-center">
+      <div class="w-full h-[5rem] border-2 border-gray-300 rounded-2xl bg-gray-50 flex items-center justify-center shadow-sm">
+        <span class="text-sm font-bold text-gray-600 uppercase tracking-widest">Text</span>
+      </div>
+      <div class="mt-2 text-[10px] font-bold text-gray-400 uppercase tracking-widest">Input</div>
+    </div>
+    <div class="flex justify-center pt-[1.75rem]">
+      <div class="w-0 h-0 border-y-[8px] border-y-transparent border-l-[12px] border-l-gray-300"></div>
+    </div>
+    <div class="flex flex-col items-center">
+      <div class="relative w-full h-[5rem] border-2 border-blue-300 rounded-2xl bg-blue-50 flex items-center justify-center shadow-sm">
+        <span class="text-sm font-bold text-blue-500 uppercase tracking-widest">Represent</span>
+        <div class="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1 opacity-80">
+          <div class="w-4 h-1 rounded-full bg-emerald-400"></div>
+          <div class="w-4 h-1 rounded-full bg-blue-400"></div>
+        </div>
+      </div>
+    </div>
+    <div class="flex justify-center pt-[1.75rem]">
+      <div class="w-0 h-0 border-y-[8px] border-y-transparent border-l-[12px] border-l-gray-300"></div>
+    </div>
+    <div class="flex flex-col items-center">
+      <div class="relative w-full h-[5rem] border-2 border-orange-300 rounded-2xl bg-orange-50 flex items-center justify-center shadow-sm px-3">
+        <span class="text-sm font-bold text-orange-500 uppercase tracking-[0.06em] text-center">Computation Graph</span>
+        <div class="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1 opacity-80">
+          <div class="w-4 h-1 rounded-full bg-orange-400"></div>
+          <div class="w-4 h-1 rounded-full bg-purple-400"></div>
+        </div>
+      </div>
+    </div>
+    <div class="flex justify-center pt-[1.75rem]">
+      <div class="w-0 h-0 border-y-[8px] border-y-transparent border-l-[12px] border-l-gray-300"></div>
+    </div>
+    <div class="flex flex-col items-center">
+      <div class="relative w-full h-[5rem] border-2 border-indigo-300 rounded-2xl bg-indigo-50 flex items-center justify-center shadow-sm px-3">
+        <span class="text-sm font-bold text-indigo-500 uppercase tracking-[0.06em] text-center">Predict</span>
+        <div class="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1 opacity-80">
+          <div class="w-4 h-1 rounded-full bg-orange-400"></div>
+          <div class="w-4 h-1 rounded-full bg-purple-400"></div>
+        </div>
+      </div>
+    </div>
+    <div class="flex justify-center pt-[1.75rem]">
+      <div class="w-0 h-0 border-y-[8px] border-y-transparent border-l-[12px] border-l-gray-300"></div>
+    </div>
+    <div class="flex flex-col items-center">
+      <div class="w-full h-[5rem] border-2 border-gray-300 rounded-2xl bg-gray-50 flex items-center justify-center shadow-sm">
+        <span class="text-sm font-bold text-gray-600 uppercase tracking-widest">Text</span>
+      </div>
+      <div class="mt-2 text-[10px] font-bold text-gray-400 uppercase tracking-widest">Output</div>
+    </div>
   </div>
-  <div class="p-6 rounded-2xl border-2 border-blue-200 bg-blue-50">
-    <div class="text-sm font-bold uppercase tracking-widest text-blue-600">Transformer</div>
-    <div class="mt-4 text-3xl font-black text-blue-700">1 Layer</div>
-    <div class="mt-2 text-sm text-gray-700">4 heads, 16-dimensional state</div>
+
+  <div v-click="1" class="mt-8 mx-auto max-w-2xl px-5 py-4 rounded-2xl border border-blue-200 bg-blue-50/80 text-center">
+    <div class="text-sm font-bold uppercase tracking-widest text-blue-600">Next Question</div>
+    <p class="mt-2 text-base text-gray-700">If this whole machine makes a bad guess, how do we nudge all those weights so the next guess is a little better?</p>
   </div>
-  <div class="p-6 rounded-2xl border-2 border-purple-200 bg-purple-50">
-    <div class="text-sm font-bold uppercase tracking-widest text-purple-600">Feed-Forward</div>
-    <div class="mt-4 text-3xl font-black text-purple-700">ReLU</div>
-    <div class="mt-2 text-sm text-gray-700">expand to 64, compress back to 16</div>
-  </div>
-  <div class="p-6 rounded-2xl border-2 border-orange-200 bg-orange-50">
-    <div class="text-sm font-bold uppercase tracking-widest text-orange-600">Normalization</div>
-    <div class="mt-4 text-3xl font-black text-orange-700">RMSNorm</div>
-    <div class="mt-2 text-sm text-gray-700">before attention and before MLP</div>
-  </div>
-  <div class="p-6 rounded-2xl border-2 border-red-200 bg-red-50">
-    <div class="text-sm font-bold uppercase tracking-widest text-red-600">Output Head</div>
-    <div class="mt-4 text-3xl font-black text-red-700">lm_head</div>
-    <div class="mt-2 text-sm text-gray-700">one logit for every token in the vocab</div>
-  </div>
-  <div class="p-6 rounded-2xl border-2 border-gray-300 bg-gray-50">
-    <div class="text-sm font-bold uppercase tracking-widest text-gray-600">Goal</div>
-    <div class="mt-4 text-3xl font-black text-gray-700">Next Token</div>
-    <div class="mt-2 text-sm text-gray-700">predict one character at a time</div>
+
+  <div class="h-0 overflow-hidden">
+    <v-click at="1" />
   </div>
 </div>
+
+---
+layout: center
+clicks: 1
+class: p-0
+---
+
+<div class="fixed inset-0 overflow-hidden bg-black">
+
+  <img src='/fuji.JPG'>
+  <div
+    v-click="1"
+    class="absolute inset-0 bg-black transition-opacity duration-500"
+    :class="$clicks >= 1 ? 'opacity-100' : 'opacity-0 pointer-events-none'"
+  ></div>
+
+  <div class="absolute left-10 top-8 text-[11px] font-bold uppercase tracking-[0.28em] text-white/80">
+    Gradient Descent
+  </div>
+</div>
+
+---
+layout: default
+clicks: 5
+---
+
+# Adam, Specifically
+
+```python {all|1|2|3-4|5|all}
+m[i] = beta1 * m[i] + (1 - beta1) * p.grad
+v[i] = beta2 * v[i] + (1 - beta2) * p.grad ** 2
+m_hat = m[i] / (1 - beta1 ** (step + 1))
+v_hat = v[i] / (1 - beta2 ** (step + 1))
+p.data -= lr_t * m_hat / (v_hat ** 0.5 + eps_adam)
+```
+
+<p v-if="$clicks >= 1" class="m-0" :class="$clicks === 1 ? 'text-blue-600' : 'text-gray-400'"><strong>1. Smooth the gradient:</strong> <code>m</code> is a moving average of recent gradients, so one noisy batch does not jerk the model around too much.</p>
+<p v-if="$clicks >= 2" class="m-0" :class="$clicks === 2 ? 'text-orange-600' : 'text-gray-400'"><strong>2. Track gradient size:</strong> <code>v</code> is a moving average of squared gradients, which estimates how wild or stable each parameter has been.</p>
+<p v-if="$clicks >= 3" class="m-0" :class="$clicks === 3 ? 'text-purple-600' : 'text-gray-400'"><strong>3. Correct the cold start:</strong> the <code>hat</code> terms undo the fact that both moving averages begin at zero.</p>
+<p v-if="$clicks >= 4" class="m-0" :class="$clicks === 4 ? 'text-emerald-600' : 'text-gray-400'"><strong>4. Make the step:</strong> move in the averaged gradient direction, but divide by the typical recent size so parameters with huge gradients do not dominate.</p>
+<p v-if="$clicks >= 5" class="m-0" :class="$clicks === 5 ? 'text-rose-600' : 'text-gray-400'"><strong>5. In plain English:</strong> Adam is gradient descent with memory and automatic step-size control for each parameter.</p>
