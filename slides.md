@@ -1662,3 +1662,59 @@ p.data -= lr_t * m_hat / (v_hat ** 0.5 + eps_adam)
 <p v-if="$clicks >= 3" class="m-0" :class="$clicks === 3 ? 'text-purple-600' : 'text-gray-400'"><strong>3. Correct the cold start:</strong> the <code>hat</code> terms undo the fact that both moving averages begin at zero.</p>
 <p v-if="$clicks >= 4" class="m-0" :class="$clicks === 4 ? 'text-emerald-600' : 'text-gray-400'"><strong>4. Make the step:</strong> move in the averaged gradient direction, but divide by the typical recent size so parameters with huge gradients do not dominate.</p>
 <p v-if="$clicks >= 5" class="m-0" :class="$clicks === 5 ? 'text-rose-600' : 'text-gray-400'"><strong>5. In plain English:</strong> Adam is gradient descent with memory and automatic step-size control for each parameter.</p>
+
+
+---
+layout: default
+clicks: 4
+---
+
+# Inference
+
+```python {all|3-5|6-8|9-13|all}
+temperature = 0.5
+for sample_idx in range(20):
+    keys, values = [[] for _ in range(n_layer)], [[] for _ in range(n_layer)]
+    token_id = BOS
+    sample = []
+    for pos_id in range(block_size):
+        logits = gpt(token_id, pos_id, keys, values)
+        probs = softmax([l / temperature for l in logits])
+        token_id = random.choices(range(vocab_size), weights=[p.data for p in probs])[0]
+        if token_id == BOS:
+            break
+        sample.append(uchars[token_id])
+    print(f"sample {sample_idx+1:2d}: {''.join(sample)}")
+```
+
+<div class="grid grid-cols-3 gap-5 mt-4">
+  <div v-click="1" class="p-5 rounded-xl border border-blue-200 bg-blue-50/70">
+    <div class="text-sm font-bold uppercase tracking-widest text-blue-600">1. Start</div>
+    <p class="mt-3 text-sm text-gray-700">We reset <code>keys</code> and <code>values</code>, begin with <code>BOS</code>, and create an empty output buffer.</p>
+  </div>
+  <div v-click="2" class="p-5 rounded-xl border border-orange-200 bg-orange-50/70">
+    <div class="text-sm font-bold uppercase tracking-widest text-orange-600">2. Predict, Then Sample</div>
+    <p class="mt-3 text-sm text-gray-700">Each step runs <code>gpt(...)</code>, converts into probabilities, and then samples the next token. </p>
+  </div>
+  <div v-click="3" class="p-5 rounded-xl border border-emerald-200 bg-emerald-50/70">
+    <div class="text-sm font-bold uppercase tracking-widest text-emerald-600">3. Stop on BOS</div>
+    <p class="mt-3 text-sm text-gray-700">If the model emits <code>BOS</code>, generation ends. Otherwise keep going.</p>
+  </div>
+</div>
+
+<div class="h-0 overflow-hidden">
+  <v-click at="1" />
+  <v-click at="2" />
+  <v-click at="3" />
+</div>
+
+---
+layout: default
+---
+
+# Questions and Answers
+
+<ul> Some Brain Teasers:
+  <li v-click>What size and kind tokens do modern tokenziers use?</li>
+  <li v-click>Trained Encoders absorb the meaning of a text into a vector. What else could you use embeddings for besides generation?</li>
+</ul>
