@@ -694,7 +694,99 @@ Differentiability: To use backpropagation, we need to calculate smooth gradients
 layout: default
 ---
 
-# The Flow: Slightly Zoomed in
+# Opening the Graph
+
+<div class="mt-6 flex flex-col items-center">
+  <div class="grid grid-cols-[6.5rem_auto_7.5rem_auto_9rem_auto_7.5rem_auto_6.5rem] gap-3 items-start w-full max-w-5xl">
+    <div class="flex flex-col items-center">
+      <div class="w-full h-[4.5rem] border-2 border-gray-300 rounded-2xl bg-gray-50 flex items-center justify-center shadow-sm">
+        <span class="text-sm font-bold text-gray-600 uppercase tracking-widest">Text</span>
+      </div>
+      <div class="mt-2 text-[10px] font-bold text-gray-400 uppercase tracking-widest">Input</div>
+    </div>
+    <div class="flex justify-center pt-[1.75rem]">
+      <div class="w-0 h-0 border-y-[8px] border-y-transparent border-l-[12px] border-l-gray-300"></div>
+    </div>
+    <div class="flex flex-col items-center opacity-80">
+      <div class="relative w-full h-[4.5rem] border-2 border-blue-300 rounded-2xl bg-blue-50 flex items-center justify-center shadow-sm">
+        <span class="text-sm font-bold text-blue-500 uppercase tracking-widest">Represent</span>
+        <div class="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1 opacity-80">
+          <div class="w-4 h-1 rounded-full bg-emerald-400"></div>
+          <div class="w-4 h-1 rounded-full bg-blue-400"></div>
+        </div>
+      </div>
+    </div>
+    <div class="flex justify-center pt-[1.75rem] transition-all duration-700" :class="$clicks >= 1 ? '-translate-x-2' : ''">
+      <div class="w-0 h-0 border-y-[8px] border-y-transparent border-l-[12px] border-l-gray-300"></div>
+    </div>
+    <div class="flex flex-col items-center">
+      <div
+        class="w-full h-[4.5rem] border-4 rounded-2xl flex items-center justify-center shadow-lg transition-all duration-700 px-3"
+        :class="$clicks >= 1 ? 'border-orange-600 bg-orange-100 scale-110 ring-8 ring-orange-100 shadow-xl' : 'border-orange-400 bg-orange-50 scale-100 shadow-md'"
+      >
+        <span class="text-sm font-black text-orange-600 uppercase tracking-[0.08em] text-center">Computation Graph</span>
+      </div>
+    </div>
+    <div class="flex justify-center pt-[1.75rem] transition-all duration-700" :class="$clicks >= 1 ? 'translate-x-2' : ''">
+      <div class="w-0 h-0 border-y-[8px] border-y-transparent border-l-[12px] border-l-gray-300"></div>
+    </div>
+    <div class="flex flex-col items-center opacity-80">
+      <div class="relative w-full h-[4.5rem] border-2 border-indigo-300 rounded-2xl bg-indigo-50 flex items-center justify-center shadow-sm px-3">
+        <span class="text-sm font-bold text-indigo-500 uppercase tracking-[0.06em] text-center">Predict</span>
+        <div class="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1 opacity-80">
+          <div class="w-4 h-1 rounded-full bg-purple-400"></div>
+          <div class="w-4 h-1 rounded-full bg-emerald-400"></div>
+        </div>
+      </div>
+    </div>
+    <div class="flex justify-center pt-[1.75rem]">
+      <div class="w-0 h-0 border-y-[8px] border-y-transparent border-l-[12px] border-l-gray-300"></div>
+    </div>
+    <div class="flex flex-col items-center">
+      <div class="w-full h-[4.5rem] border-2 border-gray-300 rounded-2xl bg-gray-50 flex items-center justify-center shadow-sm">
+        <span class="text-sm font-bold text-gray-600 uppercase tracking-widest">Text</span>
+      </div>
+      <div class="mt-2 text-[10px] font-bold text-gray-400 uppercase tracking-widest">Output</div>
+    </div>
+  </div>
+
+  <div class="relative w-full max-w-5xl mt-3 min-h-[230px] border border-slate-200 rounded-[2rem] bg-slate-50 shadow-inner overflow-hidden">
+    <div
+      class="absolute inset-0 flex flex-col items-center justify-center transition-all duration-700"
+      :class="$clicks >= 1 ? 'opacity-0 scale-90 blur-sm pointer-events-none' : 'opacity-100 scale-100'"
+    >
+      <div class="w-[25rem] h-32 border-4 border-orange-500 rounded-[1.75rem] bg-orange-50 flex flex-col items-center justify-center shadow-xl">
+        <div class="text-3xl font-black text-orange-600 uppercase tracking-[0.12em] text-center">Computation Graph</div>
+      </div>
+    </div>
+    <div
+      class="absolute inset-0 flex items-center justify-center gap-8 px-10 transition-all duration-700 delay-150"
+      :class="$clicks >= 1 ? 'opacity-100 scale-100' : 'opacity-0 scale-105 blur-sm pointer-events-none'"
+    >
+      <div class="flex flex-col items-center">
+        <div class="w-52 h-32 border-4 border-orange-400 rounded-[1.5rem] bg-orange-50 flex items-center justify-center shadow-lg">
+          <span class="text-2xl font-black text-orange-600 uppercase tracking-[0.12em]">Attention</span>
+        </div>
+      </div>
+      <div class="flex justify-center">
+        <div class="w-0 h-0 border-y-[10px] border-y-transparent border-l-[14px] border-l-gray-300"></div>
+      </div>
+      <div class="flex flex-col items-center">
+        <div class="w-52 h-32 border-4 border-purple-400 rounded-[1.5rem] bg-purple-50 flex items-center justify-center shadow-lg">
+          <span class="text-2xl font-black text-purple-600 uppercase tracking-[0.12em]">MLP</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div v-click="1" class="hidden"></div>
+
+---
+layout: default
+---
+
+# The Computation Graph: Zoomed In
 
 Before we dive deeper, what are the individual parts of the computational graph?
 
