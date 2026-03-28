@@ -1366,23 +1366,60 @@ clicks: 3
       <div class="mt-2 text-xs font-mono text-orange-600">nonlinearity</div>
     </div>
     <div class="w-0 h-0 border-y-[10px] border-y-transparent border-l-[14px] border-l-gray-300"></div>
-    <div class="px-6 py-5 rounded-xl border-4 border-purple-400 bg-purple-50 shadow-lg text-center w-44">
-      <div class="text-xl font-black text-purple-700">FC2</div>
-      <div class="mt-2 text-xs font-mono text-purple-600">compress to 16</div>
+    <div class="px-6 py-5 rounded-xl border-4 border-blue-400 bg-blue-50 shadow-lg text-center w-44">
+      <div class="text-xl font-black text-blue-700">FC2</div>
+      <div class="mt-2 text-xs font-mono text-blue-600">compress to 16</div>
     </div>
   </div>
-  <div class="grid grid-cols-3 gap-6 mt-10">
-    <div v-click="1" class="p-5 rounded-xl border border-purple-200 bg-purple-50/70">
-      <div class="text-sm font-bold uppercase tracking-widest text-purple-600">Bigger Hidden Space</div>
-      <p class="mt-3 text-sm text-gray-700">The first linear layer expands the token state from 16 numbers to 64.</p>
+  <div class="mt-10 min-h-[220px] relative">
+    <div v-click="1" class="absolute inset-0 transition-all duration-400" :class="$clicks === 1 ? 'opacity-100' : 'opacity-0 pointer-events-none'">
+      <div class="p-6 rounded-2xl border border-purple-200 bg-purple-50/70">
+        <div class="text-sm font-bold uppercase tracking-widest text-purple-600">1. Matrix Multiplication</div>
+        <div class="flex justify-center items-center gap-5 mt-6 font-mono">
+          <div class="px-5 py-4 rounded-xl border-2 border-gray-300 bg-white shadow-sm text-center">
+            <div class="text-2xl font-black text-gray-700">m × n</div>
+            <div class="mt-1 text-[10px] uppercase tracking-widest text-gray-400">input</div>
+          </div>
+          <div class="text-3xl text-gray-400 font-bold">×</div>
+          <div class="px-5 py-4 rounded-xl border-4 border-purple-300 bg-purple-50 shadow-sm text-center">
+            <div class="text-2xl font-black text-purple-700">n × p</div>
+            <div class="mt-1 text-[10px] uppercase tracking-widest text-purple-500">weights</div>
+          </div>
+          <div class="text-3xl text-gray-400 font-bold">=</div>
+          <div class="px-5 py-4 rounded-xl border-2 border-gray-300 bg-white shadow-sm text-center">
+            <div class="text-2xl font-black text-gray-700">m × p</div>
+            <div class="mt-1 text-[10px] uppercase tracking-widest text-gray-400">output</div>
+          </div>
+        </div>
+        <p class="mt-6 text-base text-gray-700 leading-relaxed">
+          The middle dimension has to match. That is how one matrix can transform the shape of another.
+        </p>
+      </div>
     </div>
-    <div v-click="2" class="p-5 rounded-xl border border-orange-200 bg-orange-50/70">
-      <div class="text-sm font-bold uppercase tracking-widest text-orange-600">ReLU</div>
-      <p class="mt-3 text-sm text-gray-700">This model uses <code>ReLU</code>, not GeLU, to keep the implementation minimal.</p>
+    <div v-click="2" class="absolute inset-0 transition-all duration-400" :class="$clicks === 2 ? 'opacity-100' : 'opacity-0 pointer-events-none'">
+      <div class="p-6 rounded-2xl border border-orange-200 bg-orange-50/70">
+        <div class="text-sm font-bold uppercase tracking-widest text-orange-600">2. ReLU</div>
+        <div class="flex justify-center items-center gap-5 mt-6 font-mono text-lg">
+          <div class="px-4 py-3 rounded-xl border-2 border-gray-300 bg-white shadow-sm">[-1.3, 0.8, -0.2, 2.1]</div>
+          <div class="w-0 h-0 border-y-[10px] border-y-transparent border-l-[14px] border-l-gray-300"></div>
+          <div class="px-5 py-3 rounded-xl border-4 border-orange-300 bg-orange-50 shadow-sm text-orange-700 font-black">ReLU</div>
+          <div class="w-0 h-0 border-y-[10px] border-y-transparent border-l-[14px] border-l-gray-300"></div>
+          <div class="px-4 py-3 rounded-xl border-2 border-gray-300 bg-white shadow-sm">[0.0, 0.8, 0.0, 2.1]</div>
+        </div>
+        <p class="mt-5 text-base text-gray-700 leading-relaxed">
+          ReLU keeps positive numbers and clips negative numbers to zero. This introduces nonlinearity.
+        </p>
+      </div>
     </div>
-    <div v-click="3" class="p-5 rounded-xl border border-blue-200 bg-blue-50/70">
-      <div class="text-sm font-bold uppercase tracking-widest text-blue-600">Per Token</div>
-      <p class="mt-3 text-sm text-gray-700">Unlike attention, the MLP does not mix tokens together. It transforms each token state individually.</p>
+    <div v-click="3" class="absolute inset-0 transition-all duration-400" :class="$clicks === 3 ? 'opacity-100' : 'opacity-0 pointer-events-none'">
+      <div class="p-6 rounded-2xl border border-blue-200 bg-blue-50/70">
+        <div class="text-sm font-bold uppercase tracking-widest text-blue-600">3. Cast Back to Dimensionality </div>
+        <p class="mt-4 text-base text-gray-700 leading-relaxed">
+          Exactly the same as step 1, with a new matrix of size 64x16.
+          Without ReLU, this whole block would just be one linear transform followed by another linear transform.
+          Those can be collapsed into a single matrix multiply, so the extra depth would not buy us much.
+        </p>
+      </div>
     </div>
   </div>
   <div class="h-0 overflow-hidden">
@@ -1391,6 +1428,8 @@ clicks: 3
     <v-click at="3" />
   </div>
 </div>
+
+<!--- For one token here, it is 1x16 times 16x64, which gives 1x64 --->
 
 ---
 layout: two-cols
